@@ -14,7 +14,7 @@ const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 const perks = [
   { icon: "📍", text: "Free pickup · Laucala Beach" },
-  { icon: "📦", text: "$5 flat-rate postage" },
+  { icon: "📦", text: "FJ$5 flat-rate postage" },
 ];
 
 export const CtaScene: React.FC<{ withBackdrop?: boolean }> = ({

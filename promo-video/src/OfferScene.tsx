@@ -122,7 +122,7 @@ export const OfferScene: React.FC<{ withBackdrop?: boolean }> = ({
                 transformOrigin: "left bottom",
               }}
             >
-              $79
+              FJ$79
             </Interactive.Div>
             <Interactive.Div
               name="Was"
@@ -134,7 +134,7 @@ export const OfferScene: React.FC<{ withBackdrop?: boolean }> = ({
                 opacity: interpolate(frame, [26, 38], [0, 1], clamp),
               }}
             >
-              $92
+              FJ$92
               <div
                 style={{
                   position: "absolute",
