@@ -354,20 +354,79 @@
   $("#menuBtn").onclick = () => $("#mainNav").classList.toggle("open");
   $("#mainNav").addEventListener("click", (e) => { if (e.target.tagName === "A") $("#mainNav").classList.remove("open"); });
 
-  $("#checkoutForm").addEventListener("submit", (e) => {
+  // ---------- Order emails ----------
+  // Every order is emailed to the owners through FormSubmit (formsubmit.co).
+  // After the first order, FormSubmit sends an "Activate" email to ORDER_EMAIL;
+  // once activated you can replace ORDER_EMAIL below with the random alias it gives you.
+  const ORDER_EMAIL = "medalean1999@gmail.com";
+  const ORDER_CC = "itspranavyt@gmail.com";
+  const ORDER_ENDPOINT = `https://formsubmit.co/ajax/${ORDER_EMAIL}`;
+  const newOrderNumber = () => "LUM-" + Date.now().toString(36).toUpperCase().slice(-6);
+
+  async function sendOrderEmail(data, items, fee) {
+    const postage = data.get("method") === "postage";
+    const sub = items.reduce((s, it) => s + it.price * it.qty, 0);
+    const orderNo = newOrderNumber();
+    const payload = {
+      _subject: `New order ${orderNo} — ${money(sub + fee)} (${postage ? "Postage" : "Pickup"})`,
+      _cc: ORDER_CC,
+      _template: "table",
+      _replyto: data.get("email"),
+      "Order number": orderNo,
+      "Placed at": new Date().toLocaleString("en-FJ", { timeZone: "Pacific/Fiji", dateStyle: "medium", timeStyle: "short" }),
+      "Customer name": `${data.get("first")} ${data.get("last")}`,
+      Phone: data.get("phone"),
+      Email: data.get("email"),
+      "Pickup or postage": postage ? "Postage" : `Pickup — ${PICKUP_ADDRESS}`,
+      ...(postage ? { "Postal address": `${data.get("address")}, ${data.get("town")}` } : {}),
+      Items: items.map((it) => `${it.qty} × ${it.name} (${money(it.price * it.qty)})`).join(" | "),
+      Subtotal: money(sub),
+      Postage: postage ? money(fee) : "Free (pickup)",
+      Total: money(sub + fee),
+    };
+    const res = await fetch(ORDER_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || String(json.success) === "false") throw new Error(json.message || `HTTP ${res.status}`);
+    return orderNo;
+  }
+
+  $("#checkoutForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const data = new FormData(form);
     const name = data.get("first");
     const postage = data.get("method") === "postage";
-    // TODO: replace with a real payment integration (Stripe Checkout, Shopify Buy Button, etc.)
+    const items = Object.entries(cart).map(([id, qty]) => ({ name: byId[id].name, price: byId[id].price, qty }));
+    if (!items.length) return;
+
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = "Placing order…";
+    let orderNo;
+    try {
+      orderNo = await sendOrderEmail(data, items, postage ? POSTAGE_COST : 0);
+    } catch (err) {
+      console.error("Order email failed:", err);
+      toast("Sorry, we couldn't place your order. Please check your connection and try again.");
+      return;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = label;
+    }
+
     cart = {};
     save();
     renderCart();
-    e.target.reset();
+    form.reset();
     $("#checkoutModal").close();
     toast(postage
-      ? `Thank you, ${name}! We'll let you know once your order has been posted.`
-      : `Thank you, ${name}! We'll contact you when it's ready for pickup at ${PICKUP_ADDRESS}.`);
+      ? `Thank you, ${name}! Order ${orderNo} received — we'll let you know once it's posted.`
+      : `Thank you, ${name}! Order ${orderNo} received — we'll contact you when it's ready for pickup.`);
   });
 
   $("#checkoutForm").addEventListener("change", (e) => { if (e.target.name === "method") renderCheckoutSummary(); });
