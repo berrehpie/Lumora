@@ -469,8 +469,20 @@ body, .site-header, .steps li, .pickup-card, .reviews blockquote, .chip { transi
 [data-theme="light"] .dept-btn:hover { border-color: var(--accent); color: var(--ink); }
 [data-theme="light"] .dept-btn.active { background: var(--grad); color: #fff; border-color: transparent; }
 @media (max-width: 720px) {
-  .dept-inner { gap: .45rem; }
+  .dept-inner { gap: .4rem; justify-content: flex-start; padding-right: 2rem; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
   .dept-btn { padding: .4rem .85rem; font-size: .72rem; letter-spacing: .1em; }
   .dept-new::after { top: 4px; right: 5px; }
   .main-nav { top: 100%; }
+}
+
+/* Makeup sub-menu: Face / Eye / Lip */
+.dept-sub { display: flex; justify-content: center; gap: 1.6rem; padding: 0 0 .6rem; }
+.dept-sub[hidden] { display: none; }
+.sub-btn { position: relative; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: .15rem 0; transition: color .2s; }
+.sub-btn::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--grad); transform: scaleX(0); transition: transform .25s; }
+.sub-btn.active { color: var(--ink); }
+.sub-btn.active::after { transform: scaleX(1); }
+@media (hover: hover) {
+  .sub-btn:hover { color: var(--ink); }
+  .sub-btn:hover::after { transform: scaleX(1); }
 }

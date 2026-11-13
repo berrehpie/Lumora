@@ -16,10 +16,16 @@
       set: `<rect x="30" y="70" width="44" height="104" rx="12" fill="${c}"/><rect x="40" y="56" width="24" height="16" fill="#3b3330"/>
             <rect x="80" y="86" width="40" height="88" rx="10" fill="#d6e2f0"/><rect x="90" y="70" width="20" height="16" fill="#3b3330"/>
             <rect x="126" y="60" width="44" height="114" rx="12" fill="#f6e7c1"/><rect x="136" y="174" width="24" height="10" fill="#3b3330"/>`,
+      lipstick: `<rect x="78" y="112" width="44" height="70" rx="6" fill="#3b3330"/><rect x="82" y="92" width="36" height="22" rx="3" fill="#c9a76b"/><path d="M87 92 V58 Q87 50 95 46 L113 38 V92 Z" fill="${c}"/>`,
+      mascara: `<rect x="84" y="76" width="32" height="106" rx="12" fill="${c}"/><rect x="88" y="28" width="24" height="50" rx="6" fill="#c9a76b"/><rect x="84" y="74" width="32" height="6" fill="#3b3330"/>`,
+      gloss: `<rect x="80" y="84" width="40" height="98" rx="12" fill="${c}" opacity=".9"/><rect x="88" y="96" width="8" height="70" rx="4" fill="#fff" opacity=".35"/><rect x="84" y="30" width="32" height="56" rx="8" fill="#3b3330"/>`,
+      pencil: `<rect x="92" y="44" width="16" height="122" rx="2" fill="${c}"/><path d="M92 44 L100 18 L108 44 Z" fill="#ecd3b4"/><path d="M97 28 L100 18 L103 28 Z" fill="${c}"/><rect x="92" y="164" width="16" height="16" rx="2" fill="#c9a76b"/>`,
+      compact: `<circle cx="100" cy="106" r="66" fill="#3b3330"/><circle cx="100" cy="106" r="52" fill="${c}"/><circle cx="100" cy="106" r="52" fill="url(#sheen)"/>`,
+      palette: `<rect x="34" y="52" width="132" height="108" rx="14" fill="#3b3330"/>${["#f1dcc6", "#dcae90", "#b67d5f", "#c99aa4", "#8a5a44", "#5a392c"].map((s, i) => `<circle cx="${62 + (i % 3) * 38}" cy="${86 + Math.floor(i / 3) * 42}" r="15" fill="${s}"/>`).join("")}`,
     };
-    const label = p.shape === "set" ? "" :
+    const label = !["tube", "pump", "dropper", "jar"].includes(p.shape) ? "" :
       `<text x="100" y="${p.shape === "jar" ? 140 : 125}" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="12" fill="#3b3330" opacity=".75" letter-spacing="1">LUMORA</text>`;
-    return `<svg viewBox="0 0 200 200" role="img" aria-label="${p.name}"><ellipse cx="100" cy="188" rx="60" ry="6" fill="#000" opacity=".06"/>${shapes[p.shape] || shapes.tube}${label}</svg>`;
+    return `<svg viewBox="0 0 200 200" role="img" aria-label="${p.name}"><defs><radialGradient id="sheen" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><ellipse cx="100" cy="188" rx="60" ry="6" fill="#000" opacity=".06"/>${shapes[p.shape] || shapes.tube}${label}</svg>`;
   }
   const media = (p) =>
     p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy" />` : bottleSVG(p);
@@ -27,25 +33,29 @@
 
   // ---------- Catalog ----------
   const state = { category: "All", query: "", sort: "featured", dept: "all" };
-  // Departments for the top bar. Products default to Skincare; set department: "Hair & Body"
-  // on a product in products.js to list it under Hair & Body.
+  // Departments for the top bar. Products default to Skincare; set department: "Makeup" or
+  // "Hair & Body" on a product in products.js to list it there.
   const DEPTS = {
     all: { title: "Shop the collection", sub: "Thoughtfully formulated essentials for every skin type.", test: () => true },
     skincare: { title: "Skincare", sub: "Cleansers, serums, moisturizers and SPF for every skin type.", test: (p) => (p.department || "Skincare") === "Skincare" },
+    makeup: { title: "Makeup", sub: "Face, eye and lip essentials for an effortless, everyday look.", test: (p) => p.department === "Makeup" },
     "hair-body": { title: "Hair & Body", sub: "Hair & body care is coming soon — check back shortly.", test: (p) => p.department === "Hair & Body" },
+    bestsellers: { title: "Bestsellers", sub: "Our most-loved products, picked again and again.", test: (p) => p.badge === "Bestseller" },
     new: { title: "New arrivals", sub: "The latest additions to the Lumora Skin shelf.", test: (p) => p.badge === "New" },
   };
-  const categories = ["All", ...new Set(PRODUCTS.map((p) => p.category))];
 
   function renderFilters() {
+    const categories = ["All", ...new Set(PRODUCTS.filter(DEPTS[state.dept].test).map((p) => p.category))];
+    $("#makeupSub").hidden = state.dept !== "makeup";
+    document.querySelectorAll("[data-sub]").forEach((b) => b.classList.toggle("active", state.dept === "makeup" && b.dataset.sub === state.category));
     $("#filters").innerHTML = categories
       .map((c) => `<button class="chip ${c === state.category ? "active" : ""}" data-cat="${c}">${c}</button>`)
       .join("");
   }
 
-  function setDept(dept) {
+  function setDept(dept, category = "All") {
     state.dept = dept;
-    state.category = "All";
+    state.category = category;
     const info = DEPTS[dept];
     $("#shopTitle").textContent = info.title;
     $("#shopSub").textContent = info.sub;
@@ -231,7 +241,8 @@
     const t = e.target.closest("button, a");
     if (!t) return;
     const d = t.dataset;
-    if (d.dept) { setDept(state.dept === d.dept ? "all" : d.dept); if (state.dept === "all") e.preventDefault(); }
+    if (d.sub) setDept("makeup", d.sub);
+    else if (d.dept) { setDept(state.dept === d.dept ? "all" : d.dept); if (state.dept === "all") e.preventDefault(); }
     else if (d.cat) { state.category = d.cat; renderFilters(); renderProducts(); }
     else if (d.add) addToCart(d.add);
     else if (d.view) openProduct(d.view);
