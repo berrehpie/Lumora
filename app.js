@@ -433,7 +433,6 @@
       full.play().catch(() => {});
     };
     $("#vbOpen").addEventListener("click", openVideo);
-    $("#vbWatch").addEventListener("click", openVideo);
     $("#videoModal").addEventListener("close", () => {
       full.pause();
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) vb.play().catch(() => {});
