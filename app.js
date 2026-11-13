@@ -441,8 +441,14 @@
 
   // ---------- Init ----------
   $("#year").textContent = new Date().getFullYear();
-  $("#heroBottles").innerHTML = ["hydra-serum", "barrier-cream", "spf50"]
-    .map((id) => `<div class="hb">${bottleSVG(byId[id])}</div>`)
+  // Hero bubble: a 3-step routine. Change the product ids or labels here.
+  const HERO_STEPS = [["gentle-cleanser", "Cleanse"], ["hydra-serum", "Treat"], ["barrier-cream", "Moisturise"]];
+  $("#heroBottles").innerHTML = HERO_STEPS
+    .map(([id, label], i) => `
+      <button class="hb" role="listitem" data-view="${id}" aria-label="Step ${i + 1}, ${label}: ${byId[id].name}">
+        <span class="hb-art">${bottleSVG(byId[id])}</span>
+        <span class="hb-label"><b>0${i + 1}</b>${label}</span>
+      </button>`)
     .join("");
   renderFilters();
   renderProducts();

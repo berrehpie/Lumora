@@ -70,8 +70,7 @@ h1 em { color: var(--accent); }
 .blob { position: absolute; inset: 6%; background: radial-gradient(circle at 30% 30%, #f6e1d3, #eed3c0 55%, #e4c3ad); border-radius: 46% 54% 42% 58% / 52% 44% 56% 48%; animation: morph 12s ease-in-out infinite; }
 @keyframes morph { 50% { border-radius: 58% 42% 55% 45% / 42% 58% 42% 58%; } }
 .hero-bottles { position: relative; display: flex; align-items: flex-end; gap: 0; width: 85%; }
-.hb { flex: 1; filter: drop-shadow(0 18px 24px rgba(80, 50, 30, .15)); }
-.hb:nth-child(2) { transform: translateY(-10%) scale(1.1); }
+
 
 /* Sections */
 .section { padding: 5rem 0; }
@@ -649,4 +648,56 @@ body.has-tray .site-footer { padding-bottom: 7rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .bg-fx .orb, .bg-fx .sweep { animation: none; }
+}
+
+/* ================= Hero bubble: glow, decorations, floating routine ================= */
+.hero-visual { isolation: isolate; }
+.blob-glow { position: absolute; inset: -4%; z-index: -1; border-radius: 50%; background: radial-gradient(circle, rgba(255, 79, 163, .6), rgba(178, 92, 255, .38) 42%, rgba(77, 159, 255, .2) 60%, transparent 72%); filter: blur(42px); animation: glowPulse 6s ease-in-out infinite; }
+@keyframes glowPulse { 50% { transform: scale(1.1); opacity: .75; } }
+.blob { overflow: hidden; box-shadow: 0 0 80px rgba(255, 79, 163, .55), 0 0 160px rgba(178, 92, 255, .35), 0 0 260px rgba(77, 159, 255, .25), inset 0 0 70px rgba(255, 255, 255, .35), inset -20px -30px 80px rgba(77, 159, 255, .35); }
+/* glossy highlight + slow shimmer inside the bubble */
+.blob::before { content: ""; position: absolute; width: 46%; height: 30%; left: 14%; top: 10%; border-radius: 50%; background: radial-gradient(ellipse, rgba(255, 255, 255, .75), rgba(255, 255, 255, 0) 70%); transform: rotate(-28deg); filter: blur(4px); }
+.blob::after { content: ""; position: absolute; inset: -30%; background: conic-gradient(from 0deg, transparent 0 20%, rgba(255, 255, 255, .22) 28%, transparent 36% 62%, rgba(255, 255, 255, .14) 70%, transparent 78%); animation: sweep 14s linear infinite; mix-blend-mode: overlay; }
+/* rotating orbit ring with glowing dots */
+.blob-ring { position: absolute; inset: -1%; border-radius: 50%; border: 1.5px dashed rgba(255, 255, 255, .28); animation: sweep 50s linear infinite; }
+.blob-ring::before { content: ""; position: absolute; inset: 7%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .12); }
+.blob-ring i { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px #fff, 0 0 26px #ff4fa3, 0 0 40px #b25cff; }
+.blob-ring i:nth-child(1) { top: -6px; left: calc(50% - 6px); }
+.blob-ring i:nth-child(2) { bottom: 12%; right: 4%; width: 8px; height: 8px; box-shadow: 0 0 10px #fff, 0 0 22px #4d9fff; }
+.blob-ring i:nth-child(3) { bottom: 18%; left: 2%; width: 6px; height: 6px; box-shadow: 0 0 8px #fff, 0 0 18px #ff4fa3; }
+/* little glossy bubbles floating around */
+.deco-bubble { position: absolute; border-radius: 50%; background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .95), rgba(255, 255, 255, .25) 30%, rgba(178, 92, 255, .18) 62%, rgba(255, 255, 255, .05) 75%); box-shadow: inset 0 0 12px rgba(255, 255, 255, .45), 0 0 24px rgba(255, 79, 163, .35); animation: bob 7s ease-in-out infinite; }
+.db-1 { width: 13%; aspect-ratio: 1; top: 4%; right: 8%; }
+.db-2 { width: 8%; aspect-ratio: 1; bottom: 10%; left: 4%; animation-delay: -2s; animation-duration: 6s; }
+.db-3 { width: 5%; aspect-ratio: 1; top: 20%; left: 0; animation-delay: -4s; }
+.db-4 { width: 6%; aspect-ratio: 1; bottom: 2%; right: 22%; animation-delay: -1s; animation-duration: 8s; }
+@keyframes bob { 50% { transform: translateY(-14px); } }
+/* sparkles */
+.deco-spark { position: absolute; z-index: 2; color: #fff; line-height: 1; text-shadow: 0 0 10px #ff4fa3, 0 0 22px #b25cff; animation: twinkle 3.6s ease-in-out infinite; pointer-events: none; }
+.ds-1 { top: 12%; left: 22%; font-size: 1.4rem; }
+.ds-2 { top: 8%; right: 30%; font-size: .9rem; animation-delay: -1.2s; }
+.ds-3 { top: 46%; right: 4%; font-size: 1.1rem; animation-delay: -2.1s; }
+.ds-4 { bottom: 16%; left: 16%; font-size: .8rem; animation-delay: -.6s; }
+.ds-5 { bottom: 24%; right: 18%; font-size: 1.2rem; animation-delay: -2.8s; }
+/* floating products with step labels */
+.hero-bottles { z-index: 1; display: flex; align-items: flex-end; justify-content: center; gap: 2%; width: 86%; }
+.hb { flex: 1; display: flex; flex-direction: column; align-items: center; gap: .55rem; padding: 0; border: 0; background: none; cursor: pointer; animation: floaty 5.5s ease-in-out infinite; }
+.hb:nth-child(2) { animation-delay: -1.8s; margin-bottom: 9%; }
+.hb:nth-child(3) { animation-delay: -3.6s; }
+.hb:hover, .hb:focus-visible { animation-play-state: paused; }
+@keyframes floaty { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-16px) rotate(1.5deg); } }
+.hb-art { display: block; width: 100%; filter: drop-shadow(0 16px 22px rgba(40, 10, 60, .35)); transition: transform .35s cubic-bezier(.2, .8, .2, 1); }
+.hb:nth-child(2) .hb-art { transform: scale(1.12); }
+.hb:hover .hb-art { transform: translateY(-6px) scale(1.06); }
+.hb:nth-child(2):hover .hb-art { transform: translateY(-6px) scale(1.18); }
+.hb:focus-visible { outline: 2px solid #fff; outline-offset: 6px; border-radius: 16px; }
+.hb-label { display: inline-flex; align-items: center; gap: .4rem; padding: .38rem .8rem; border-radius: 999px; background: rgba(255, 255, 255, .88); color: #15151d; font-size: .66rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; box-shadow: 0 8px 22px rgba(60, 20, 80, .25), 0 0 0 1px rgba(255, 255, 255, .6); backdrop-filter: blur(6px); }
+.hb-label b { font-weight: 700; letter-spacing: .04em; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@media (max-width: 520px) {
+  .hb-label { font-size: .55rem; letter-spacing: .12em; padding: .3rem .55rem; gap: .25rem; }
+  .hero-bottles { width: 92%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blob-glow, .blob::after, .blob-ring, .deco-bubble, .deco-spark, .hb { animation: none; }
+  .deco-spark { opacity: .7; }
 }
