@@ -26,7 +26,15 @@
   const stars = (r) => "★".repeat(Math.round(r)) + "☆".repeat(5 - Math.round(r));
 
   // ---------- Catalog ----------
-  const state = { category: "All", query: "", sort: "featured" };
+  const state = { category: "All", query: "", sort: "featured", dept: "all" };
+  // Departments for the top bar. Products default to Skincare; set department: "Hair & Body"
+  // on a product in products.js to list it under Hair & Body.
+  const DEPTS = {
+    all: { title: "Shop the collection", sub: "Thoughtfully formulated essentials for every skin type.", test: () => true },
+    skincare: { title: "Skincare", sub: "Cleansers, serums, moisturizers and SPF for every skin type.", test: (p) => (p.department || "Skincare") === "Skincare" },
+    "hair-body": { title: "Hair & Body", sub: "Hair & body care is coming soon — check back shortly.", test: (p) => p.department === "Hair & Body" },
+    new: { title: "New arrivals", sub: "The latest additions to the Lumora Skin shelf.", test: (p) => p.badge === "New" },
+  };
   const categories = ["All", ...new Set(PRODUCTS.map((p) => p.category))];
 
   function renderFilters() {
@@ -35,10 +43,22 @@
       .join("");
   }
 
+  function setDept(dept) {
+    state.dept = dept;
+    state.category = "All";
+    const info = DEPTS[dept];
+    $("#shopTitle").textContent = info.title;
+    $("#shopSub").textContent = info.sub;
+    document.querySelectorAll(".dept-btn").forEach((b) => b.classList.toggle("active", b.dataset.dept === dept));
+    renderFilters();
+    renderProducts();
+  }
+
   function renderProducts() {
     const q = state.query.toLowerCase();
     let list = PRODUCTS.filter(
       (p) =>
+        DEPTS[state.dept].test(p) &&
         (state.category === "All" || p.category === state.category) &&
         (!q || `${p.name} ${p.category} ${p.description} ${p.skinType}`.toLowerCase().includes(q))
     );
@@ -211,7 +231,8 @@
     const t = e.target.closest("button, a");
     if (!t) return;
     const d = t.dataset;
-    if (d.cat) { state.category = d.cat; renderFilters(); renderProducts(); }
+    if (d.dept) { setDept(state.dept === d.dept ? "all" : d.dept); if (state.dept === "all") e.preventDefault(); }
+    else if (d.cat) { state.category = d.cat; renderFilters(); renderProducts(); }
     else if (d.add) addToCart(d.add);
     else if (d.view) openProduct(d.view);
     else if (d.inc) setQty(d.inc, cart[d.inc] + 1);
