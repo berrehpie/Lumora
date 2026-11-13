@@ -1,0 +1,42 @@
+# Publishes the Lumora Skin website to GitHub Pages on every push.
+# One-time setup: repo Settings → Pages → Source: "GitHub Actions".
+name: Deploy website to GitHub Pages
+
+on:
+  push:
+    branches: ["claude/nifty-edison-1sliz3"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Copy only the website files, so the design skills (.claude/) and the
+      # video source project (promo-video/) are not published.
+      - name: Collect site files
+        run: |
+          mkdir -p _site
+          cp index.html styles.css app.js products.js _site/
+          cp -r images media _site/
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
