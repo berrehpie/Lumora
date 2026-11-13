@@ -1,5 +1,6 @@
 (() => {
   const PICKUP_ADDRESS = "17 Kishore Kumar Street, Laucala Beach";
+  const POSTAGE_COST = 5;
   const $ = (s, el = document) => el.querySelector(s);
   const money = (n) => `$${n.toFixed(2)}`;
   const byId = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
@@ -179,13 +180,14 @@
 
   function renderCheckoutSummary() {
     const sub = subtotal();
-    const delivery = checkoutMethod() === "delivery";
-    $("#deliveryFields").hidden = !delivery;
-    $("#deliveryFields").querySelectorAll("input").forEach((i) => (i.required = delivery));
+    const postage = checkoutMethod() === "postage";
+    const fee = postage ? POSTAGE_COST : 0;
+    $("#postageFields").hidden = !postage;
+    $("#postageFields").querySelectorAll("input").forEach((i) => (i.required = postage));
     $("#checkoutSummary").innerHTML = `
       ${Object.entries(cart).map(([id, q]) => `<div class="row"><span>${byId[id].name} × ${q}</span><span>${money(byId[id].price * q)}</span></div>`).join("")}
-      <div class="row"><span>${delivery ? "Delivery" : "Pickup"}</span><span>${delivery ? "Confirmed by us" : "Free"}</span></div>
-      <div class="row total"><span>Total</span><span>${money(sub)}${delivery ? " + delivery" : ""}</span></div>`;
+      <div class="row"><span>${postage ? "Postage" : "Pickup"}</span><span>${postage ? money(fee) : "Free"}</span></div>
+      <div class="row total"><span>Total</span><span>${money(sub + fee)}</span></div>`;
   }
 
   function openCheckout() {
@@ -239,15 +241,15 @@
     e.preventDefault();
     const data = new FormData(e.target);
     const name = data.get("first");
-    const delivery = data.get("method") === "delivery";
+    const postage = data.get("method") === "postage";
     // TODO: replace with a real payment integration (Stripe Checkout, Shopify Buy Button, etc.)
     cart = {};
     save();
     renderCart();
     e.target.reset();
     $("#checkoutModal").close();
-    toast(delivery
-      ? `Thank you, ${name}! We'll contact you to arrange delivery.`
+    toast(postage
+      ? `Thank you, ${name}! We'll let you know once your order has been posted.`
       : `Thank you, ${name}! We'll contact you when it's ready for pickup at ${PICKUP_ADDRESS}.`);
   });
 

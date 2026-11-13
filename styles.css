@@ -327,7 +327,7 @@ html, body { overflow-x: clip; }
 .toast { opacity: 0; visibility: hidden; transition: transform .3s, opacity .3s, visibility .3s; }
 .toast.show { opacity: 1; visibility: visible; }
 
-/* Pickup & delivery */
+/* Pickup & postage */
 .pickup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 980px; margin: 0 auto; }
 .pickup-card { position: relative; padding: 2.2rem; border-radius: var(--radius); border: 1px solid transparent; background-image: linear-gradient(var(--surface), var(--surface)), var(--grad); background-origin: border-box; background-clip: padding-box, border-box; }
 .pickup-card:first-child { box-shadow: 0 20px 60px rgba(255, 79, 163, .18); }
@@ -342,15 +342,15 @@ html, body { overflow-x: clip; }
 .pickup-steps strong, .pickup-card p strong { color: var(--ink); }
 .cart-note { margin: 0; padding: .9rem 1.5rem; font-size: .85rem; color: var(--muted); background: var(--sand); }
 
-/* Checkout pickup/delivery choice */
+/* Checkout pickup/postage choice */
 .method { border: 0; padding: 0; margin: 0; display: grid; gap: .5rem; }
 .method legend { font-size: .85rem; font-weight: 500; margin-bottom: .4rem; padding: 0; }
 .checkout .method-opt { display: flex; grid-template-columns: none; align-items: flex-start; gap: .7rem; padding: .8rem 1rem; border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer; font-weight: 400; transition: .2s; }
 .method-opt:has(input:checked) { border-color: var(--accent); background: #fff5fa; }
 .method-opt input { accent-color: var(--accent); margin-top: .25rem; }
 .method-opt small { display: block; color: var(--muted); font-size: .8rem; }
-#deliveryFields { display: grid; gap: .9rem; }
-#deliveryFields[hidden] { display: none; }
+#postageFields { display: grid; gap: .9rem; }
+#postageFields[hidden] { display: none; }
 
 @media (max-width: 720px) {
   .pickup-grid { grid-template-columns: 1fr; }
@@ -393,3 +393,15 @@ body, .site-header, .steps li, .pickup-card, .reviews blockquote, .chip { transi
 [data-theme="light"] .pickup-card:last-child .pickup-tag { background: #e3eeff; color: #2a6fd4; }
 [data-theme="light"] .pickup-card address { color: var(--ink); }
 [data-theme="light"] .site-footer { border-top-color: var(--line); }
+
+/* Pickup times + postage price */
+.hours { border-radius: 14px; padding: 1rem 1.2rem; margin: 0 0 1.3rem; background: rgba(255, 79, 163, .08); border: 1px solid rgba(255, 79, 163, .25); }
+.hours-title { margin: 0 0 .5rem !important; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: #ff8cc6 !important; }
+.hours dl { margin: 0; display: grid; gap: .35rem; }
+.hours dl div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.hours dt { font-weight: 500; color: var(--ink); }
+.hours dt small { color: var(--muted); font-weight: 400; margin-left: .3rem; }
+.hours dd { margin: 0; font-weight: 600; color: var(--ink); white-space: nowrap; }
+.price-callout { border-radius: 14px; padding: 1rem 1.2rem; margin: 0 0 1.3rem; background: rgba(77, 159, 255, .08); border: 1px solid rgba(77, 159, 255, .3); color: var(--muted); }
+.price-callout span { font-family: var(--serif); font-size: 2.4rem; font-weight: 600; line-height: 1; margin-right: .4rem; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+[data-theme="light"] .hours-title { color: #d42a7e !important; }

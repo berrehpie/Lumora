@@ -22,7 +22,7 @@
       <nav class="main-nav" id="mainNav">
         <a href="#shop">Shop</a>
         <a href="#routine">Routine</a>
-        <a href="#pickup">Pickup &amp; Delivery</a>
+        <a href="#pickup">Pickup &amp; Postage</a>
         <a href="#about">Our Story</a>
         <a href="#reviews">Reviews</a>
       </nav>
@@ -91,13 +91,13 @@
       </div>
     </section>
 
-    <!-- Pickup & Delivery -->
+    <!-- Pickup & Postage -->
     <section class="section pickup" id="pickup">
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">How to get your order</p>
-          <h2>Pickup &amp; Delivery</h2>
-          <p>Order online, then collect it from us or have it delivered to you.</p>
+          <h2>Pickup &amp; Postage</h2>
+          <p>Order online, then collect it from us or have it posted to you.</p>
         </div>
         <div class="pickup-grid">
           <article class="pickup-card">
@@ -108,24 +108,32 @@
             <p class="pickup-tag">Free</p>
             <p>All orders are to be picked up from:</p>
             <address>17 Kishore Kumar Street<br />Laucala Beach</address>
+            <div class="hours">
+              <p class="hours-title">Pickup times</p>
+              <dl>
+                <div><dt>Weekdays <small>Mon – Fri</small></dt><dd>6pm – 9pm</dd></div>
+                <div><dt>Weekends <small>Sat – Sun</small></dt><dd>10am – 7pm</dd></div>
+              </dl>
+            </div>
             <ol class="pickup-steps">
               <li>Place your order on this website and choose <strong>Pickup</strong> at checkout.</li>
               <li>We'll contact you when your order is ready to collect.</li>
-              <li>Collect your order from the address above.</li>
+              <li>Collect your order from the address above during pickup times.</li>
             </ol>
             <a class="btn btn-ghost btn-small" href="https://www.google.com/maps/search/?api=1&amp;query=17+Kishore+Kumar+Street+Laucala+Beach" target="_blank" rel="noopener">Get directions</a>
           </article>
           <article class="pickup-card">
             <div class="pickup-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>
             </div>
-            <h3>Delivery</h3>
-            <p class="pickup-tag">Fee depends on your location</p>
-            <p>Can't come to us? Choose <strong>Delivery</strong> at checkout and enter your address.</p>
+            <h3>Postage</h3>
+            <p class="pickup-tag">$5 flat rate</p>
+            <p>Can't come to us? Choose <strong>Postage</strong> at checkout and we'll post your order to you.</p>
+            <div class="price-callout"><span>$5</span> postage on every order</div>
             <ol class="pickup-steps">
-              <li>Place your order and choose <strong>Delivery</strong> at checkout.</li>
-              <li>We'll contact you to confirm the delivery fee and time.</li>
-              <li>Your order is brought to your door.</li>
+              <li>Place your order and choose <strong>Postage</strong> at checkout.</li>
+              <li>Enter the address you'd like it posted to.</li>
+              <li>We'll post your order and let you know once it's sent.</li>
             </ol>
           </article>
         </div>
@@ -209,7 +217,7 @@
       </div>
       <div>
         <h4>Help</h4>
-        <a href="#pickup">Pickup &amp; delivery</a>
+        <a href="#pickup">Pickup &amp; postage</a>
         <a href="#">FAQ</a>
         <a href="mailto:hello@example.com">Contact us</a>
       </div>
@@ -230,11 +238,11 @@
       <h3>Your cart</h3>
       <button class="icon-btn" id="cartClose" aria-label="Close cart">✕</button>
     </div>
-    <p class="cart-note">📍 Pickup from 17 Kishore Kumar Street, Laucala Beach, or choose delivery at checkout.</p>
+    <p class="cart-note">📍 Pickup from 17 Kishore Kumar Street, Laucala Beach, or choose $5 postage at checkout.</p>
     <div class="cart-items" id="cartItems"></div>
     <div class="drawer-foot">
       <div class="row"><span>Subtotal</span><strong id="cartSubtotal">$0.00</strong></div>
-      <p class="muted">Choose pickup or delivery at checkout.</p>
+      <p class="muted">Choose free pickup or $5 postage at checkout.</p>
       <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>
     </div>
   </aside>
@@ -262,13 +270,13 @@
         <fieldset class="method">
           <legend>How would you like to get your order?</legend>
           <label class="method-opt"><input type="radio" name="method" value="pickup" checked />
-            <span><strong>Pickup</strong> · Free<small>17 Kishore Kumar Street, Laucala Beach</small></span></label>
-          <label class="method-opt"><input type="radio" name="method" value="delivery" />
-            <span><strong>Delivery</strong> · Fee confirmed by us<small>We'll contact you to arrange it</small></span></label>
+            <span><strong>Pickup</strong> · Free<small>17 Kishore Kumar Street, Laucala Beach<br />Weekdays 6pm – 9pm · Weekends 10am – 7pm</small></span></label>
+          <label class="method-opt"><input type="radio" name="method" value="postage" />
+            <span><strong>Postage</strong> · $5.00<small>We'll post your order to your address</small></span></label>
         </fieldset>
-        <div id="deliveryFields" hidden>
-          <label>Delivery address<input name="address" autocomplete="street-address" /></label>
-          <label>Area / town<input name="area" /></label>
+        <div id="postageFields" hidden>
+          <label>Postal address<input name="address" autocomplete="street-address" /></label>
+          <label>Town / city<input name="town" autocomplete="address-level2" /></label>
         </div>
         <div class="summary" id="checkoutSummary"></div>
         <button class="btn btn-primary btn-block" type="submit">Place order</button>
