@@ -336,6 +336,28 @@
     </div>
   </dialog>
 
+  <!-- Quick-Compare tray -->
+  <div class="compare-tray" id="compareTray" role="region" aria-label="Compare products" hidden>
+    <div class="tray-info">
+      <strong id="compareTitle">Compare</strong>
+      <span id="compareHint" class="muted"></span>
+    </div>
+    <div class="tray-slots" id="compareSlots"></div>
+    <div class="tray-actions">
+      <button class="btn btn-primary btn-small" id="compareGo" data-comparego disabled>Compare now</button>
+      <button class="tray-clear" data-compareclear>Clear</button>
+    </div>
+  </div>
+
+  <!-- Quick-Compare table -->
+  <dialog class="modal compare-modal" id="compareModal" aria-labelledby="compareModalTitle">
+    <button class="icon-btn modal-close" data-close aria-label="Close">✕</button>
+    <div class="modal-body">
+      <h3 id="compareModalTitle">Side-by-side comparison</h3>
+      <div class="cmp-scroll" id="compareTable"></div>
+    </div>
+  </dialog>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="products.js"></script>

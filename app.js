@@ -89,6 +89,7 @@
           <p class="card-cat">${p.category} · ${p.size}</p>
           <h3><button class="link" data-view="${p.id}">${p.name}</button></h3>
           ${p.rating ? `<p class="rating"><span class="stars">${stars(p.rating)}</span> ${p.rating} (${p.reviews})</p>` : `<p class="rating">&nbsp;</p>`}
+          ${p.compare ? `<label class="compare-check"><input type="checkbox" data-compare="${p.id}" ${compareList.includes(p.id) ? "checked" : ""} /><span>Compare</span></label>` : ""}
           <div class="card-foot">
             <span class="price">${money(p.price)}${p.compareAt ? ` <s>${money(p.compareAt)}</s>` : ""}</span>
             <button class="btn btn-small" data-add="${p.id}">Add to cart</button>
@@ -173,6 +174,86 @@
     document.body.style.overflow = "";
   }
 
+  // ---------- Quick-Compare tray ----------
+  const COMPARE_MAX = 3;
+  let compareList = [];
+  const catLabel = (cat) => cat.toLowerCase();
+
+  function toggleCompare(id, on) {
+    const p = byId[id];
+    if (on) {
+      const first = compareList[0] && byId[compareList[0]];
+      if (first && first.category !== p.category) {
+        toast(`You're comparing ${catLabel(first.category)}. Clear the tray to compare ${catLabel(p.category)}.`);
+        return renderCompare();
+      }
+      if (compareList.length >= COMPARE_MAX) {
+        toast(`You can compare up to ${COMPARE_MAX} products at a time.`);
+        return renderCompare();
+      }
+      if (!compareList.includes(id)) compareList.push(id);
+    } else {
+      compareList = compareList.filter((x) => x !== id);
+    }
+    renderCompare();
+  }
+
+  function renderCompare() {
+    document.querySelectorAll("[data-compare]").forEach((cb) => (cb.checked = compareList.includes(cb.dataset.compare)));
+    const tray = $("#compareTray");
+    const n = compareList.length;
+    tray.hidden = n === 0;
+    document.body.classList.toggle("has-tray", n > 0);
+    if (!n) { if ($("#compareModal").open) $("#compareModal").close(); return; }
+    $("#compareTitle").textContent = `Compare ${catLabel(byId[compareList[0]].category)}`;
+    $("#compareHint").textContent = n < 2 ? "Add 1 more to compare" : `${n} of ${COMPARE_MAX} selected`;
+    $("#compareSlots").innerHTML = Array.from({ length: COMPARE_MAX }, (_, i) => {
+      const p = byId[compareList[i]];
+      return p
+        ? `<div class="slot"><div class="slot-media">${media(p)}</div><span class="slot-name">${p.name}</span><button class="slot-x" data-uncompare="${p.id}" aria-label="Remove ${p.name} from compare">✕</button></div>`
+        : `<div class="slot empty"><span>+</span></div>`;
+    }).join("");
+    $("#compareGo").disabled = n < 2;
+    if ($("#compareModal").open) renderCompareTable();
+  }
+
+  function renderCompareTable() {
+    const items = compareList.map((id) => byId[id]);
+    const list = (arr) => `<ul>${arr.map((x) => `<li>${x}</li>`).join("")}</ul>`;
+    const rows = [
+      ["Price", (p) => `<strong>${money(p.price)}</strong>${p.compareAt ? ` <s>${money(p.compareAt)}</s>` : ""}`],
+      ["Size", (p) => p.size],
+      ["Texture", (p) => p.compare.texture],
+      ["Key actives", (p) => list(p.compare.actives)],
+      ["Skin type", (p) => p.skinType],
+      ["Key benefits", (p) => list(p.compare.benefits)],
+      ["Rating", (p) => (p.rating ? `<span class="stars">${stars(p.rating)}</span> ${p.rating} <span class="muted">(${p.reviews})</span>` : `<span class="muted">No reviews yet</span>`)],
+    ];
+    $("#compareTable").innerHTML = `
+      <table class="cmp" style="--cols:${items.length}">
+        <thead><tr><th scope="col"><span class="sr-only">Feature</span></th>${items.map((p) => `
+          <th scope="col">
+            <button class="cmp-x" data-uncompare="${p.id}" aria-label="Remove ${p.name}">✕</button>
+            <button class="cmp-media" data-view="${p.id}" aria-label="View ${p.name}">${media(p)}</button>
+            <span class="cmp-name">${p.name}</span>
+          </th>`).join("")}</tr></thead>
+        <tbody>
+          ${rows.map(([label, fn]) => `<tr><th scope="row">${label}</th>${items.map((p) => `<td>${fn(p)}</td>`).join("")}</tr>`).join("")}
+          <tr class="cmp-actions"><th scope="row"><span class="sr-only">Add to cart</span></th>${items.map((p) => `<td><button class="btn btn-small" data-add="${p.id}">Add to cart</button></td>`).join("")}</tr>
+        </tbody>
+      </table>`;
+  }
+
+  function openCompare() {
+    if (compareList.length < 2) return;
+    renderCompareTable();
+    $("#compareModal").showModal();
+  }
+
+  document.addEventListener("change", (e) => {
+    if (e.target.matches("[data-compare]")) toggleCompare(e.target.dataset.compare, e.target.checked);
+  });
+
   // ---------- Product modal ----------
   function openProduct(id) {
     const p = byId[id];
@@ -241,7 +322,10 @@
     const t = e.target.closest("button, a");
     if (!t) return;
     const d = t.dataset;
-    if (d.sub) setDept("makeup", d.sub);
+    if (d.uncompare) toggleCompare(d.uncompare, false);
+    else if ("compareclear" in d) { compareList = []; renderCompare(); }
+    else if ("comparego" in d) openCompare();
+    else if (d.sub) setDept("makeup", d.sub);
     else if (d.dept) { setDept(state.dept === d.dept ? "all" : d.dept); if (state.dept === "all") e.preventDefault(); }
     else if (d.cat) { state.category = d.cat; renderFilters(); renderProducts(); }
     else if (d.add) addToCart(d.add);

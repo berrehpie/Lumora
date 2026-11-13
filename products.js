@@ -16,6 +16,12 @@ const PRODUCTS = [
     description: "A creamy, low-foam cleanser that removes makeup and impurities while keeping your skin barrier intact.",
     ingredients: "Ceramides, oat extract, glycerin",
     skinType: "All skin types, including sensitive",
+    // Shown in the Quick-Compare table
+    compare: {
+      texture: "Creamy, low-foam lotion",
+      actives: ["Ceramide complex 1%", "Colloidal oat 1%", "Glycerin 5%"],
+      benefits: ["Removes makeup & SPF", "Won't strip the skin barrier", "Calms redness"],
+    },
   },
   {
     id: "clarifying-gel",
@@ -30,6 +36,12 @@ const PRODUCTS = [
     description: "A refreshing gel cleanser with gentle salicylic acid to keep pores clear without over-drying.",
     ingredients: "0.5% salicylic acid, green tea, niacinamide",
     skinType: "Oily & combination",
+    // Shown in the Quick-Compare table
+    compare: {
+      texture: "Clear, refreshing gel",
+      actives: ["Salicylic acid 0.5%", "Niacinamide 2%", "Green tea extract 1%"],
+      benefits: ["Unclogs pores", "Controls excess oil", "Helps prevent breakouts"],
+    },
   },
   {
     id: "hydra-serum",
@@ -88,6 +100,12 @@ const PRODUCTS = [
     description: "A rich-yet-breathable cream that restores your moisture barrier overnight.",
     ingredients: "Ceramides, cholesterol, shea butter",
     skinType: "Dry, normal & sensitive",
+    // Shown in the Quick-Compare table
+    compare: {
+      texture: "Rich, cushiony cream",
+      actives: ["Ceramides 3%", "Cholesterol 1%", "Shea butter 5%"],
+      benefits: ["Repairs the moisture barrier", "Relieves tightness & flaking", "Locks in moisture overnight"],
+    },
   },
   {
     id: "medicube-capsule-cream",
@@ -100,6 +118,12 @@ const PRODUCTS = [
     description: "A moisturizing cream with hyaluronic capsules that melt into the skin as you apply it, for lasting hydration.",
     ingredients: "Sodium hyaluronate, panthenol",
     skinType: "All skin types",
+    // Shown in the Quick-Compare table
+    compare: {
+      texture: "Cream with melting moisture capsules",
+      actives: ["Sodium hyaluronate (% not listed)", "Panthenol (% not listed)"],
+      benefits: ["Lasting hydration", "Capsules melt in as you apply", "Suits all skin types"],
+    },
   },
   {
     id: "gel-cream",
@@ -114,6 +138,12 @@ const PRODUCTS = [
     description: "An oil-free gel-cream that hydrates instantly and leaves a soft, matte finish.",
     ingredients: "Hyaluronic acid, aloe, cucumber extract",
     skinType: "Oily & combination",
+    // Shown in the Quick-Compare table
+    compare: {
+      texture: "Light, oil-free water gel",
+      actives: ["Hyaluronic acid 1%", "Aloe vera 10%", "Cucumber extract 1%"],
+      benefits: ["Instant hydration", "Soft, matte finish", "Won't clog pores"],
+    },
   },
   {
     id: "spf50",
