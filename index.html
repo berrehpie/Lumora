@@ -63,6 +63,35 @@
   </header>
 
   <main>
+    <!-- Promo video banner -->
+    <section class="video-banner" aria-label="Lumora Skin promo video">
+      <div class="container">
+        <div class="vb-card">
+          <button class="vb-media" id="vbOpen" type="button" aria-label="Watch the Lumora Skin promo video full size">
+            <video class="vb-video" id="vbVideo" autoplay muted loop playsinline preload="metadata" poster="media/lumora-promo-poster.jpg" aria-hidden="true" tabindex="-1">
+              <source src="media/lumora-promo.webm" type="video/webm" />
+              <source src="media/lumora-promo.mp4" type="video/mp4" />
+            </video>
+            <span class="vb-expand" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></span>
+          </button>
+          <div class="vb-text">
+            <p class="vb-tag">Lumora Skin in 15 seconds</p>
+            <p class="vb-title">Clean, gentle skincare — <em>made simple.</em></p>
+          </div>
+          <div class="vb-actions">
+            <button class="btn btn-ghost btn-small" id="vbWatch" type="button">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>
+              Watch
+            </button>
+            <button class="vb-toggle" id="vbToggle" type="button" aria-label="Pause video" title="Pause video">
+              <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+              <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Hero -->
     <section class="hero">
       <div class="container hero-inner">
@@ -334,6 +363,16 @@
         <p class="muted small">Demo checkout — connect a payment provider (e.g. Stripe or Shopify) before going live.</p>
       </form>
     </div>
+  </dialog>
+
+  <!-- Promo video (full size) -->
+  <dialog class="modal video-modal" id="videoModal" aria-label="Lumora Skin promo video">
+    <button class="icon-btn modal-close" data-close aria-label="Close">✕</button>
+    <video id="videoFull" controls playsinline preload="none" poster="media/lumora-promo-poster.jpg"
+      aria-label="Lumora Skin promo: clean, gentle skincare. The Daily Glow Set, now $79. Free pickup in Laucala Beach or $5 postage.">
+      <source src="media/lumora-promo.webm" type="video/webm" />
+      <source src="media/lumora-promo.mp4" type="video/mp4" />
+    </video>
   </dialog>
 
   <!-- Quick-Compare tray -->

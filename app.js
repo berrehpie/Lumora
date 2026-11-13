@@ -387,6 +387,41 @@
   };
   setThemeLabel();
 
+  // ---------- Promo video banner ----------
+  const vb = $("#vbVideo");
+  const vbBtn = $("#vbToggle");
+  if (vb && vbBtn) {
+    const syncVb = () => {
+      const label = vb.paused ? "Play video" : "Pause video";
+      vbBtn.classList.toggle("paused", vb.paused);
+      vbBtn.setAttribute("aria-label", label);
+      vbBtn.title = label;
+    };
+    // Respect visitors who prefer less motion: show the still until they press play
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      vb.removeAttribute("autoplay");
+      vb.pause();
+    }
+    vbBtn.addEventListener("click", () => (vb.paused ? vb.play() : vb.pause()));
+    vb.addEventListener("play", syncVb);
+    vb.addEventListener("pause", syncVb);
+    syncVb();
+
+    const full = $("#videoFull");
+    const openVideo = () => {
+      vb.pause();
+      $("#videoModal").showModal();
+      full.currentTime = 0;
+      full.play().catch(() => {});
+    };
+    $("#vbOpen").addEventListener("click", openVideo);
+    $("#vbWatch").addEventListener("click", openVideo);
+    $("#videoModal").addEventListener("close", () => {
+      full.pause();
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) vb.play().catch(() => {});
+    });
+  }
+
   // ---------- Init ----------
   $("#year").textContent = new Date().getFullYear();
   $("#heroBottles").innerHTML = ["hydra-serum", "barrier-cream", "spf50"]
