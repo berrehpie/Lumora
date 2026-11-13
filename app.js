@@ -292,6 +292,27 @@
   };
   setThemeLabel();
 
+  // ---------- Promo reel ----------
+  const reel = $("#reelVideo");
+  const reelBtn = $("#reelToggle");
+  if (reel && reelBtn) {
+    const syncReelBtn = () => {
+      const label = reel.paused ? "Play video" : "Pause video";
+      reelBtn.classList.toggle("paused", reel.paused);
+      reelBtn.setAttribute("aria-label", label);
+      reelBtn.title = label;
+    };
+    // Respect users who prefer less motion: show the poster until they press play
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      reel.removeAttribute("autoplay");
+      reel.pause();
+    }
+    reelBtn.addEventListener("click", () => (reel.paused ? reel.play() : reel.pause()));
+    reel.addEventListener("play", syncReelBtn);
+    reel.addEventListener("pause", syncReelBtn);
+    syncReelBtn();
+  }
+
   // ---------- Init ----------
   $("#year").textContent = new Date().getFullYear();
   $("#heroBottles").innerHTML = ["hydra-serum", "barrier-cream", "spf50"]

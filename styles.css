@@ -474,3 +474,26 @@ body, .site-header, .steps li, .pickup-card, .reviews blockquote, .chip { transi
   .dept-new::after { top: 4px; right: 5px; }
   .main-nav { top: 100%; }
 }
+
+/* ================= Promo reel ================= */
+.reel { padding: 0 0 4rem; }
+.reel-frame {
+  position: relative; border-radius: calc(var(--radius) + 6px); padding: 3px;
+  background: var(--grad);
+  box-shadow: 0 30px 80px -20px rgba(255, 79, 163, .35), 0 20px 60px -30px rgba(77, 159, 255, .45);
+}
+.reel-video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); background: #08080c; }
+.reel-toggle {
+  position: absolute; right: 18px; bottom: 18px; width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, .25);
+  background: rgba(8, 8, 12, .55); color: #fff; backdrop-filter: blur(6px); transition: .2s;
+}
+.reel-toggle:hover { background: rgba(8, 8, 12, .8); transform: scale(1.06); }
+.reel-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.reel-toggle .icon-play { display: none; }
+.reel-toggle.paused .icon-play { display: block; }
+.reel-toggle.paused .icon-pause { display: none; }
+@media (max-width: 720px) {
+  .reel { padding-bottom: 2.5rem; }
+  .reel-toggle { right: 10px; bottom: 10px; width: 38px; height: 38px; }
+}

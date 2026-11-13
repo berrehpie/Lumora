@@ -13,7 +13,9 @@ import { colors, grad, sans, serif } from "./theme";
 const ease = Easing.bezier(0.16, 1, 0.3, 1);
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-export const OfferScene: React.FC = () => {
+export const OfferScene: React.FC<{ withBackdrop?: boolean }> = ({
+  withBackdrop = true,
+}) => {
   const frame = useCurrentFrame();
   const set = [
     { shape: "tube", color: "#e9d8c8", size: 340, y: 0 },
@@ -23,7 +25,7 @@ export const OfferScene: React.FC = () => {
 
   return (
     <AbsoluteFill name="Offer">
-      <Backdrop />
+      {withBackdrop && <Backdrop />}
       <AbsoluteFill
         style={{
           flexDirection: "row",
@@ -32,7 +34,16 @@ export const OfferScene: React.FC = () => {
           gap: 40,
         }}
       >
-        <div style={{ width: 920, flexShrink: 0, whiteSpace: "nowrap", display: "flex", flexDirection: "column", gap: 18 }}>
+        <div
+          style={{
+            width: 920,
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+            display: "flex",
+            flexDirection: "column",
+            gap: 18,
+          }}
+        >
           <Interactive.Div
             name="Tag"
             style={{
@@ -42,7 +53,10 @@ export const OfferScene: React.FC = () => {
               letterSpacing: "0.2em",
               textTransform: "uppercase",
               color: colors.accent,
-              opacity: interpolate(frame, [0, 16], [0, 1], { ...clamp, easing: ease }),
+              opacity: interpolate(frame, [0, 16], [0, 1], {
+                ...clamp,
+                easing: ease,
+              }),
             }}
           >
             New · Bundle &amp; save
@@ -55,7 +69,10 @@ export const OfferScene: React.FC = () => {
               fontSize: 150,
               lineHeight: 1.02,
               color: colors.ink,
-              opacity: interpolate(frame, [4, 24], [0, 1], { ...clamp, easing: ease }),
+              opacity: interpolate(frame, [4, 24], [0, 1], {
+                ...clamp,
+                easing: ease,
+              }),
               translate: `${interpolate(frame, [4, 30], [-80, 0], { ...clamp, easing: ease })}px 0px`,
             }}
           >
@@ -69,12 +86,22 @@ export const OfferScene: React.FC = () => {
               fontFamily: sans,
               fontSize: 48,
               color: colors.muted,
-              opacity: interpolate(frame, [14, 32], [0, 1], { ...clamp, easing: ease }),
+              opacity: interpolate(frame, [14, 32], [0, 1], {
+                ...clamp,
+                easing: ease,
+              }),
             }}
           >
             Cleanser · Serum · SPF 50
           </Interactive.Div>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 32, marginTop: 20 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: 32,
+              marginTop: 20,
+            }}
+          >
             <Interactive.Div
               name="Price"
               style={{
@@ -138,7 +165,12 @@ export const OfferScene: React.FC = () => {
                 key={i}
                 style={{
                   marginLeft: i ? -150 : 0,
-                  opacity: interpolate(frame, [start, start + 14], [0, 1], clamp),
+                  opacity: interpolate(
+                    frame,
+                    [start, start + 14],
+                    [0, 1],
+                    clamp,
+                  ),
                   translate: `0px ${interpolate(frame, [start, start + 30], [300, b.y], { ...clamp, easing: Easing.spring({ damping: 14 }) }) + Math.sin((frame + i * 20) / 16) * 8}px`,
                 }}
               >
@@ -146,7 +178,9 @@ export const OfferScene: React.FC = () => {
                   shape={b.shape}
                   color={b.color}
                   size={b.size}
-                  style={{ filter: `drop-shadow(0 40px 50px ${colors.purple}44)` }}
+                  style={{
+                    filter: `drop-shadow(0 40px 50px ${colors.purple}44)`,
+                  }}
                 />
               </div>
             );

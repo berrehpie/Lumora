@@ -17,11 +17,13 @@ const perks = [
   { icon: "📦", text: "$5 flat-rate postage" },
 ];
 
-export const CtaScene: React.FC = () => {
+export const CtaScene: React.FC<{ withBackdrop?: boolean }> = ({
+  withBackdrop = true,
+}) => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill name="CTA">
-      <Backdrop />
+      {withBackdrop && <Backdrop />}
       <AbsoluteFill
         style={{
           justifyContent: "center",
@@ -39,7 +41,10 @@ export const CtaScene: React.FC = () => {
             lineHeight: 1.05,
             textAlign: "center",
             color: colors.ink,
-            opacity: interpolate(frame, [0, 18], [0, 1], { ...clamp, easing: ease }),
+            opacity: interpolate(frame, [0, 18], [0, 1], {
+              ...clamp,
+              easing: ease,
+            }),
             translate: `0px ${interpolate(frame, [0, 24], [40, 0], { ...clamp, easing: ease })}px`,
           }}
         >
@@ -63,7 +68,10 @@ export const CtaScene: React.FC = () => {
                   borderRadius: 999,
                   border: `2px solid ${colors.line}`,
                   background: `${colors.surface}cc`,
-                  opacity: interpolate(frame, [start, start + 14], [0, 1], { ...clamp, easing: ease }),
+                  opacity: interpolate(frame, [start, start + 14], [0, 1], {
+                    ...clamp,
+                    easing: ease,
+                  }),
                   translate: `0px ${interpolate(frame, [start, start + 20], [30, 0], { ...clamp, easing: ease })}px`,
                 }}
               >
@@ -73,7 +81,14 @@ export const CtaScene: React.FC = () => {
           })}
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 56, marginTop: 20 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 56,
+            marginTop: 20,
+          }}
+        >
           <Interactive.Div
             name="Logo"
             style={{
@@ -82,10 +97,14 @@ export const CtaScene: React.FC = () => {
               fontSize: 84,
               letterSpacing: "0.14em",
               color: colors.ink,
-              opacity: interpolate(frame, [30, 46], [0, 1], { ...clamp, easing: ease }),
+              opacity: interpolate(frame, [30, 46], [0, 1], {
+                ...clamp,
+                easing: ease,
+              }),
             }}
           >
-            LUMORA <span style={{ fontWeight: 500, color: colors.accent }}>SKIN</span>
+            LUMORA{" "}
+            <span style={{ fontWeight: 500, color: colors.accent }}>SKIN</span>
           </Interactive.Div>
           <Interactive.Div
             name="Button"
@@ -101,7 +120,11 @@ export const CtaScene: React.FC = () => {
               opacity: interpolate(frame, [36, 48], [0, 1], clamp),
               scale: interpolate(frame, [36, 58, 70, 78], [0.7, 1, 1, 1.06], {
                 ...clamp,
-                easing: [Easing.spring({ damping: 12 }), Easing.linear, Easing.inOut(Easing.ease)],
+                easing: [
+                  Easing.spring({ damping: 12 }),
+                  Easing.linear,
+                  Easing.inOut(Easing.ease),
+                ],
                 output: "perceptual-scale",
               }),
             }}

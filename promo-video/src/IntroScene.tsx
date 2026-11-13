@@ -12,11 +12,13 @@ import { colors, grad, sans, serif } from "./theme";
 const ease = Easing.bezier(0.16, 1, 0.3, 1);
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-export const IntroScene: React.FC = () => {
+export const IntroScene: React.FC<{ withBackdrop?: boolean }> = ({
+  withBackdrop = true,
+}) => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill name="Intro">
-      <Backdrop />
+      {withBackdrop && <Backdrop />}
       <AbsoluteFill
         style={{
           justifyContent: "center",
@@ -34,7 +36,10 @@ export const IntroScene: React.FC = () => {
             color: colors.ink,
             whiteSpace: "nowrap",
             letterSpacing: `${interpolate(frame, [0, 50], [0.5, 0.14], { ...clamp, easing: ease })}em`,
-            opacity: interpolate(frame, [0, 24], [0, 1], { ...clamp, easing: ease }),
+            opacity: interpolate(frame, [0, 24], [0, 1], {
+              ...clamp,
+              easing: ease,
+            }),
             filter: `blur(${interpolate(frame, [0, 30], [18, 0], { ...clamp, easing: ease })}px)`,
           }}
         >
@@ -57,7 +62,10 @@ export const IntroScene: React.FC = () => {
             height: 4,
             borderRadius: 2,
             backgroundImage: grad,
-            width: interpolate(frame, [20, 55], [0, 720], { ...clamp, easing: ease }),
+            width: interpolate(frame, [20, 55], [0, 720], {
+              ...clamp,
+              easing: ease,
+            }),
           }}
         />
         <Interactive.Div
@@ -69,7 +77,10 @@ export const IntroScene: React.FC = () => {
             letterSpacing: "0.28em",
             textTransform: "uppercase",
             color: colors.muted,
-            opacity: interpolate(frame, [38, 60], [0, 1], { ...clamp, easing: ease }),
+            opacity: interpolate(frame, [38, 60], [0, 1], {
+              ...clamp,
+              easing: ease,
+            }),
             translate: `0px ${interpolate(frame, [38, 60], [24, 0], { ...clamp, easing: ease })}px`,
           }}
         >

@@ -4,9 +4,24 @@ import { staticFile } from "remotion";
 // Fonts are self-hosted in public/fonts (OFL-licensed, from Fontsource) so
 // renders don't depend on Google Fonts being reachable.
 const faces: [string, string, string, string][] = [
-  ["Cormorant Garamond", "500", "normal", "cormorant-garamond-latin-500-normal"],
-  ["Cormorant Garamond", "600", "normal", "cormorant-garamond-latin-600-normal"],
-  ["Cormorant Garamond", "600", "italic", "cormorant-garamond-latin-600-italic"],
+  [
+    "Cormorant Garamond",
+    "500",
+    "normal",
+    "cormorant-garamond-latin-500-normal",
+  ],
+  [
+    "Cormorant Garamond",
+    "600",
+    "normal",
+    "cormorant-garamond-latin-600-normal",
+  ],
+  [
+    "Cormorant Garamond",
+    "600",
+    "italic",
+    "cormorant-garamond-latin-600-italic",
+  ],
   ["Inter", "400", "normal", "inter-latin-400-normal"],
   ["Inter", "500", "normal", "inter-latin-500-normal"],
   ["Inter", "600", "normal", "inter-latin-600-normal"],

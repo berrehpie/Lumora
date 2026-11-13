@@ -24,11 +24,13 @@ const lineup: { name: string; shape: BottleShape; color: string }[] = [
 
 const badges = ["Cruelty-free", "Vegan", "Fragrance-free"];
 
-export const ProductsScene: React.FC = () => {
+export const ProductsScene: React.FC<{ withBackdrop?: boolean }> = ({
+  withBackdrop = true,
+}) => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill name="Products">
-      <Backdrop />
+      {withBackdrop && <Backdrop />}
       <AbsoluteFill
         style={{
           alignItems: "center",
@@ -44,7 +46,10 @@ export const ProductsScene: React.FC = () => {
             fontWeight: 600,
             fontSize: 132,
             color: colors.ink,
-            opacity: interpolate(frame, [0, 20], [0, 1], { ...clamp, easing: ease }),
+            opacity: interpolate(frame, [0, 20], [0, 1], {
+              ...clamp,
+              easing: ease,
+            }),
             translate: `0px ${interpolate(frame, [0, 24], [40, 0], { ...clamp, easing: ease })}px`,
           }}
         >
@@ -68,7 +73,12 @@ export const ProductsScene: React.FC = () => {
                 key={p.name}
                 style={{
                   marginLeft: i ? -70 : 0,
-                  opacity: interpolate(frame, [start, start + 16], [0, 1], clamp),
+                  opacity: interpolate(
+                    frame,
+                    [start, start + 16],
+                    [0, 1],
+                    clamp,
+                  ),
                   translate: `0px ${interpolate(frame, [start, start + 28], [260, 0], { ...clamp, easing: Easing.spring({ damping: 14 }) }) + float}px`,
                   rotate: `${interpolate(frame, [start, start + 28], [i % 2 ? 8 : -8, 0], { ...clamp, easing: ease })}deg`,
                 }}
@@ -77,7 +87,9 @@ export const ProductsScene: React.FC = () => {
                   shape={p.shape}
                   color={p.color}
                   size={i === 2 ? 380 : 320}
-                  style={{ filter: `drop-shadow(0 30px 40px ${colors.accent}33)` }}
+                  style={{
+                    filter: `drop-shadow(0 30px 40px ${colors.accent}33)`,
+                  }}
                 />
               </div>
             );
@@ -102,8 +114,14 @@ export const ProductsScene: React.FC = () => {
                   display: "flex",
                   alignItems: "center",
                   gap: 16,
-                  opacity: interpolate(frame, [start, start + 14], [0, 1], { ...clamp, easing: ease }),
-                  scale: interpolate(frame, [start, start + 18], [0.8, 1], { ...clamp, easing: ease }),
+                  opacity: interpolate(frame, [start, start + 14], [0, 1], {
+                    ...clamp,
+                    easing: ease,
+                  }),
+                  scale: interpolate(frame, [start, start + 18], [0.8, 1], {
+                    ...clamp,
+                    easing: ease,
+                  }),
                 }}
               >
                 <span
