@@ -255,12 +255,6 @@
 
   $("#checkoutForm").addEventListener("change", (e) => { if (e.target.name === "method") renderCheckoutSummary(); });
 
-  $("#newsletterForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    e.target.reset();
-    toast("You're subscribed! Check your inbox for 10% off.");
-  });
-
   // ---------- Light / dark mode ----------
   function setThemeLabel() {
     const light = document.documentElement.dataset.theme === "light";
