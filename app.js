@@ -387,6 +387,24 @@
   };
   setThemeLabel();
 
+  // ---------- Animated background: rising bubbles + twinkling sparkles ----------
+  (function buildBackgroundFx() {
+    const layer = $("#fxLayer");
+    if (!layer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const small = window.innerWidth < 720;
+    const tints = ["#ff4fa3", "#b25cff", "#4d9fff"];
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    let html = "";
+    for (let i = 0; i < (small ? 10 : 18); i++) {
+      const size = rnd(10, small ? 40 : 60).toFixed(0);
+      html += `<span class="bubble" style="--size:${size}px;--x:${rnd(0, 100).toFixed(1)}vw;--tint:${tints[i % 3]};--dur:${rnd(16, 34).toFixed(1)}s;--delay:-${rnd(0, 34).toFixed(1)}s;--sway:${rnd(-30, 30).toFixed(0)}px;--o:${rnd(.3, .7).toFixed(2)}"></span>`;
+    }
+    for (let i = 0; i < (small ? 8 : 16); i++) {
+      html += `<span class="sparkle" style="--x:${rnd(0, 100).toFixed(1)}vw;--y:${rnd(0, 100).toFixed(1)}vh;--s:${rnd(10, 20).toFixed(0)}px;--dur:${rnd(2.5, 5).toFixed(1)}s;--delay:-${rnd(0, 5).toFixed(1)}s">✦</span>`;
+    }
+    layer.innerHTML = html;
+  })();
+
   // ---------- Promo video banner ----------
   const vb = $("#vbVideo");
   const vbBtn = $("#vbToggle");

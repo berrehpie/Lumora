@@ -15,6 +15,13 @@
   </script>
 </head>
 <body>
+  <!-- Animated background: aurora glows, light sweep, rising bubbles, sparkles -->
+  <div class="bg-fx" aria-hidden="true">
+    <span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span><span class="orb orb-4"></span>
+    <span class="sweep"></span>
+    <div class="fx-layer" id="fxLayer"></div>
+    <span class="vignette"></span>
+  </div>
 
   <!-- Banner: announcement bar -->
   <div class="announcement" role="region" aria-label="Announcements">
@@ -75,19 +82,21 @@
             <span class="vb-expand" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></span>
           </button>
           <div class="vb-text">
-            <p class="vb-tag">Lumora Skin in 15 seconds</p>
-            <p class="vb-title">Clean, gentle skincare — <em>made simple.</em></p>
+            <p class="vb-tag"><span class="vb-live"></span>Lumora Skin in 15 seconds</p>
+            <h2 class="vb-title">Clean, gentle skincare — <em>made simple.</em></h2>
+            <p class="vb-sub">Meet the Daily Glow Set, now just $79. Pick up free in Laucala Beach, or get it posted for $5.</p>
+            <div class="vb-actions">
+              <button class="btn btn-primary" id="vbWatch" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>
+                Watch the video
+              </button>
+              <a href="#shop" class="btn btn-ghost">Shop now</a>
+            </div>
           </div>
-          <div class="vb-actions">
-            <button class="btn btn-ghost btn-small" id="vbWatch" type="button">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>
-              Watch
-            </button>
-            <button class="vb-toggle" id="vbToggle" type="button" aria-label="Pause video" title="Pause video">
-              <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-              <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
-            </button>
-          </div>
+          <button class="vb-toggle" id="vbToggle" type="button" aria-label="Pause video" title="Pause video">
+            <svg class="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg class="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+          </button>
         </div>
       </div>
     </section>
