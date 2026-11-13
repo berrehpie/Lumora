@@ -2,7 +2,8 @@
   const PICKUP_ADDRESS = "17 Kishore Kumar Street, Laucala Beach";
   const POSTAGE_COST = 5;
   const $ = (s, el = document) => el.querySelector(s);
-  const money = (n) => `$${n.toFixed(2)}`;
+  // All prices are in Fijian dollars
+  const money = (n) => `FJ$${n.toFixed(2)}`;
   const byId = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
   // ---------- Product illustration (used when no photo is supplied) ----------
